@@ -12,14 +12,14 @@ void compression(int count, char c) {
 int main(int argc, char *argv[]) {
   //checks to make sure there is one file.
   if (argc < 2) {
-    printf("wunzip: file1 [file2 ...]\n");
+    printf("wzip: file1 [file2 ...]");
     exit(1);
   }
   //looks through files
   for (int i = 1; i < argc; i++) {
     FILE *fp = fopen(argv[i], "r"); // open file
     if (fp == NULL) {
-      printf("wzip: cannot open file \n");
+      printf("wzip: cannot open file");
       exit(1);
     }
     //defining variables

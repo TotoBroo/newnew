@@ -21,7 +21,7 @@ void search_file(char *searchterm, FILE *fp) {
 int main(int argc, char *argv[]) {
   // if no argument provided
   if (argc == 1) {
-    printf("wgrep: searchterm [file ...]\n");
+    printf("wgrep: searchterm [file ...]");
     exit(1);
   }
   // if only one argument provided
@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
     FILE *fp = fopen(argv[2], "r"); //open file
     //if unable to open file/gives NULL value
     if (fp == NULL) {
-      printf("Wgrep: cannot open file \n");
+      printf("wgrep: cannot open file");
       exit(1);
       }
     search_file(searchterm, fp);

@@ -13,7 +13,7 @@ int main(int argc, char *argv[]) {
   for (int i = 1; i < argc; i++){
     FILE *fp = fopen(argv[i], "r");
     if (fp == NULL) {
-      printf("wcat: cannot open file \n");
+      printf("wcat: cannot open file");
       exit(1);
     }
     // read and print file
