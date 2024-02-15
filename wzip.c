@@ -1,53 +1,44 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define BUFFER_SIZE (1024)
 
-int main(int argc, char *argv[]) {
-  //checks to make sure there is one file.
-  if (argc < 2) {
-    printf("wunzip: file1 [file2 ...]\n");
+
+int main(int argc, char *argv[]){
+  // if no file arguments are given, print error message and exit
+    if(argc==1)
+  {
+    printf("wzip: file1 [file2 ...]\n");
     exit(1);
   }
-  //looks through files
-  for (int i = 1; i < argc; i++) {
-    FILE *fp = fopen(argv[i], "r"); // open file
-    if (fp == NULL) {
-      printf("wzip: cannot open file \n");
-      exit(1);
-    }
-    //defining variables
-    int count = 0;
-    char buffer[BUFFER_SIZE];
-    int first_c;
-    size_t bytes_read;
-    //continues until fread() returns 0
-    while((bytes_read = fread(buffer, sizeof(char), BUFFER_SIZE, fp)) > 0) {
-      for (size_t j = 0; j < bytes_read; j++) {
-        //if count is zero, initialize first_c and increment count
-        if (count == 0) {
-          first_c = buffer[j];
-          count++;
-        }
-        //if current character is same as first_c, increment count
-        else if  (first_c == buffer[j]) {
-          count++;
-        }
-        // if current character is not same as first_c, compress and reset count and first_c
-        else {
+  // loop through each file
+  for (int i; i < argc; i++) {
+    FILE *fp = fopen(argv[i], "r");
+    int first_c = EOF; // first char to end of file
+    int count = 0; //initialize count
+    int c; //current char
+    // read characters from file until end of file
+    while ((c = getc(fp)) != EOF) {
+      // if the current character is the same as the first character, increment count
+      if (c == first_c) {
+        count++;
+      }
+      // if not, print the count and character to stdout
+      else {
+        if (count > 0) {
           fwrite(&count, sizeof(int), 1, stdout);
-          putchar(first_c);
-          count = 1;
-          first_c = buffer[j];
+          fwrite(&first_c, sizeof(char), 1, stdout);
         }
+        // update first character and count
+        first_c = c;
+        count = 1;
       }
     }
-    //write any remaining count and character
+    // write count and first character of the last sequence to stdout
     if (count > 0) {
       fwrite(&count, sizeof(int), 1, stdout);
-      putchar(first_c);
+      fwrite(&first_c, sizeof(char), 1, stdout);
     }
-  fclose(fp);
+    fclose(fp);
   }
-  exit(0);
+  return(0);
 }
