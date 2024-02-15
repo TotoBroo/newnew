@@ -6,16 +6,7 @@
 // function to search for a term in a file
 // uses getline() instead of fgets()
 void search_file(char *searchterm, FILE *fp) {
-  char *line = NULL;
-  size_t len = 0;
-  // reads each line of the file and prints line if term is found
-  while ((getline(&line, &len, fp)) != -1) {
-    if (strstr(line, searchterm) != NULL) {
-      printf("%s", line);
-    }
-  }
-  //frees up allocated memory because of getline()
-  free(line);
+
 }
 
 int main(int argc, char *argv[]) {
@@ -27,7 +18,16 @@ int main(int argc, char *argv[]) {
   // if only one argument provided
   else if (argc == 2) {
     char *searchterm = argv[1]; //search term
-    search_file(searchterm, stdin);
+    char *line = NULL;
+    size_t len = 0;
+    // reads each line of the file and prints line if term is found
+    while ((getline(&line, &len, stdin)) != -1) {
+      if (strstr(line, searchterm) != NULL) {
+        printf("%s", line);
+      }
+    }
+    //frees up allocated memory because of getline()
+    free(line);
   }
   //if two arguments provided
   else if (argc == 3) {
@@ -38,7 +38,16 @@ int main(int argc, char *argv[]) {
       printf("wgrep: cannot open file\n");
       exit(1);
       }
-    search_file(searchterm, fp);
+    char *line = NULL;
+    size_t len = 0;
+    // reads each line of the file and prints line if term is found
+    while ((getline(&line, &len, fp)) != -1) {
+      if (strstr(line, searchterm) != NULL) {
+        printf("%s", line);
+      }
+    }
+    //frees up allocated memory because of getline()
+    free(line);
     fclose(fp); //closes file
   }
   // if more than two arguments provided
